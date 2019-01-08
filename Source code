@@ -1,0 +1,150 @@
+import turtle
+import math
+import random
+from tkinter import *
+import time
+
+
+window=Tk()
+window.title("DoDGE it!")
+a= Label(window,text="Welcome to DODGE IT!").grid()
+c= Label(window,text="1. You have to avoid the red circles").grid()
+c= Label(window,text="2. Let's see who will survive the longest").grid()
+
+
+
+
+def game():
+    #setting up the screen
+    start=time.time()
+    wn=turtle.Screen()
+    wn.bgcolor("LightGreen")
+    wn.tracer(3)
+
+    #Creating the player turtle
+    player = turtle.Turtle()
+    player.color("blue")
+    player.shape("triangle")
+    player.penup()
+    player.speed(0)
+        
+    speed = 1
+
+    #Drawing the border
+    mypen = turtle.Turtle()
+    mypen.penup()
+    mypen.setposition(-300,-300)
+    mypen.pendown()
+    mypen.pensize(4)
+    for side in range(4):
+        mypen.forward(600)
+        mypen.left(90)
+    mypen.hideturtle()
+
+    #Making the obstacles-
+    '''def incgoal():
+        maxgoal = 1
+        maxgoal = maxgoal + 1
+    t = Timer(2.0,incgoal)'''
+    maxgoal = 12
+    goals = []
+    for count in range(maxgoal):
+        q=random.randint(-300,300)
+        w=random.randint(-300,300)
+        goals.append(turtle.Turtle())
+        goals[count].shape("circle")
+        goals[count].color("red")
+        goals[count].penup()
+        goals[count].speed(0)
+        goals[count].setposition(q,w)
+
+    maxgoal2=12
+    goals2=[]
+    for count in range(maxgoal2):
+        q=random.randint(-300,300)
+        w=random.randint(-300,300)
+        goals2.append(turtle.Turtle())
+        goals2[count].shape("circle")
+        goals2[count].color("red")
+        goals2[count].penup()
+        goals2[count].speed(0)
+        goals2[count].setposition(q,w)
+
+
+
+
+
+
+
+    #Turnleft Function
+    def turnleft():
+        player.left(30)
+
+    #TurnRight Function
+    def turnright():
+        player.right(30)
+
+    #Speed function
+    speed=1
+    def Speed():
+        #global speed
+        speed = speed+1
+
+    def iscollision(t1, t2):
+        d = math.sqrt(math.pow(t1.xcor()-t2.xcor(),2) + math.pow(t1.ycor()-t2.ycor(),2))
+        if (d<20):
+            return True
+        else:
+            return False
+        
+
+    #Keyboard Binding
+    turtle.listen()
+    turtle.onkey(turnleft,"Left")
+    turtle.onkey(turnright,"Right")
+    turtle.onkey(Speed,"Up")
+
+    while True:
+        player.forward(6)
+        
+    #Boundry Checking
+        if (player.xcor()>300 or player.xcor()<-300):
+          player.right(180)
+        if (player.ycor()>300 or player.ycor()<-300):
+          player.right(180)
+
+    #Moving the goals
+        for count in range(maxgoal):
+            goals[count].forward(7)
+            if (goals[count].xcor()>300 or goals[count].xcor()<-300):
+              goals[count].right(180)
+            if (goals[count].ycor()>300 or goals[count].ycor()<-300):
+              goals[count].right(180)
+    #Collison detection
+            if iscollision(player,goals[count]):
+              turtle.Screen().bye()
+
+        for count in range(maxgoal2):
+            goals2[count].backward(7)
+            if (goals2[count].xcor()>300 or goals2[count].xcor()<-300):
+              goals2[count].right(180)
+            if (goals2[count].ycor()>300 or goals2[count].ycor()<-300):
+              goals2[count].right(180)
+    #Collison detection
+            if iscollision(player,goals2[count]):
+               turtle.Screen().bye()
+        end=time.time()
+        final=end-start
+        t1.insert(END,final)
+'''def timeplayed():
+    final=end-start
+    t1.insert(END,final)'''
+
+
+        
+b= Button(window,text="Start",command=game).grid()
+g= Label(window,text="You survived for:").grid()
+#b1=Button(window,text="Press for time",command=timeplayed).grid()
+t1 = Text(window,height=2,width=5)
+t1.grid()
+window.mainloop()
